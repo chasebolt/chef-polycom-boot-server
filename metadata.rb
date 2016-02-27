@@ -14,3 +14,5 @@ supports 'fedora'
 supports 'oracle'
 supports 'redhat'
 supports 'scientific'
+
+depends 'yum-nginx'

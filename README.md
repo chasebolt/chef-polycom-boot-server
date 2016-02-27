@@ -19,7 +19,13 @@ The following attributes are set by default
 ```
 
 ## Usage Example
-TODO
+
+
+## TODO
+- Firmware Updates
+- Default Config Download
+- Accept phone uploads
+- Support for Let's Encrypt
 
 ## Maintainers
 
