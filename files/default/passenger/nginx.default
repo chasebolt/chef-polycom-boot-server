@@ -1,0 +1,15 @@
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+
+  server_name _;
+
+  passenger_enabled on;
+  passenger_user app;
+
+  root /home/app/webapp/public;
+
+#  location / {
+#    try_files $uri $uri/ =404;
+#  }
+}

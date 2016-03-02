@@ -1,13 +1,26 @@
 ---
 driver:
   name: vagrant
+  network:
+    - ["forwarded_port", {guest: 80, host: 8080, auto_correct: true}]
+    - ["forwarded_port", {guest: 443, host: 8443, auto_correct: true}]
+
+driver_config:
+  customize:
+    cpus: 2
+    memory: 1024
 
 provisioner:
   name: chef_zero
   require_chef_omnibus: true
+  attributes:
+    docker:
+      container_cmd_timeout: 30
+
+verifier:
+  name: inspec
 
 platforms:
-  - name: centos-6.7
   - name: centos-7.1
 
 suites:

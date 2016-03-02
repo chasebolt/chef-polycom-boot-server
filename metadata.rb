@@ -15,4 +15,4 @@ supports 'oracle'
 supports 'redhat'
 supports 'scientific'
 
-depends 'yum-nginx'
+depends 'docker'

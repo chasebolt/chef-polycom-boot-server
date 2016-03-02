@@ -1,6 +1,6 @@
 #
 # Author:: Chase Bolt (<chase.bolt@gmail.com>)
-# Recipe:: default
+# Recipe:: build_passenger
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker_service 'default' do
-  action [:create, :start]
+docker_image 'phusion/passenger-ruby22' do
+  read_timeout 300
 end
 
-include_recipe 'polycom-boot-server::build_passenger'
+remote_directory '/opt/src/passenger' do
+  source 'passenger'
+  purge true
+  notifies :build, 'docker_image[passenger]', :immediately
+end
 
-docker_container 'passenger' do
-  port ['80:80/tcp', '443:443/tcp']
+docker_image 'passenger' do
+  tag 'latest'
+  source '/opt/src/passenger'
+  action :build_if_missing
+  notifies :redeploy, 'docker_container[passenger]', :immediately
 end

@@ -7,7 +7,7 @@ but a wrapper cookbook will be necessary to manage individual phone templates
 or override the default.
 
 ## Requirements
-- Chef 11+
+- Chef 12+
 
 ### Platforms
 - Fedora and RHEL based distributions (RHEL, CentOS, and Scientific Linux) are supported
