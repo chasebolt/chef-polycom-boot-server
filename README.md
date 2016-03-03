@@ -6,6 +6,8 @@ that polycom phones can be provisioned from. A default phone template will be de
 but a wrapper cookbook will be necessary to manage individual phone templates
 or override the default.
 
+Utilizes Docker for running nginx/passenger
+
 ## Requirements
 - Chef 12+
 
@@ -16,10 +18,17 @@ or override the default.
 The following attributes are set by default
 
 ```ruby
+default['polycom-boot-server']['webapp']['managed'] = true
+default['polycom-boot-server']['webapp']['repo'] = 'https://github.com/chasebolt/webapp-polycom-boot-server.git'
+
 ```
 
 ## Usage Example
-
+Add `include_recipe 'polycom-boot-server'` into your wrapper cookbook. You can override
+the webapp that is used for provisioning the polycom configs by setting
+`default['polycom-boot-server']['webapp']['repo']` to the location of your git repo.
+If your repo is private, you will need to set `default['polycom-boot-server']['webapp']['managed'] = false`
+and deploy your webapp to `/opt/webapp` manually.
 
 ## TODO
 - Firmware Updates
@@ -28,7 +37,6 @@ The following attributes are set by default
 - Support for Let's Encrypt
 
 ## Maintainers
-
 * Chase Bolt (<chase.bolt@gmail.com>)
 
 ## License

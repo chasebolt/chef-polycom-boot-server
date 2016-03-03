@@ -18,8 +18,38 @@ docker_service 'default' do
   action [:create, :start]
 end
 
-include_recipe 'polycom-boot-server::build_passenger'
+docker_image 'cbolt/passenger-ruby22'
+
+directory '/opt/webapp'
+directory '/opt/nginx'
+
+cookbook_file '/opt/nginx/default' do
+  source 'nginx.default'
+end
+
+if node['polycom-boot-server']['webapp']['managed']
+  package 'git'
+
+  deploy_revision '/opt/webapp' do
+    repo node['polycom-boot-server']['webapp']['repo']
+    revision 'HEAD'
+    migrate false
+    shallow_clone true
+    rollback_on_error true
+    symlink_before_migrate.clear
+    create_dirs_before_symlink.clear
+    purge_before_symlink.clear
+    symlinks.clear
+    action :deploy
+    notifies :redeploy, 'docker_container[passenger]'
+  end
+end
 
 docker_container 'passenger' do
+  repo 'cbolt/passenger-ruby22'
   port ['80:80/tcp', '443:443/tcp']
+  volumes [
+    '/opt/webapp/current:/home/app/webapp',
+    '/opt/nginx/default:/etc/nginx/sites-available/default:ro'
+  ]
 end
